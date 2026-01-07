@@ -2,6 +2,7 @@
 
 import path from 'node:path'
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin'
+import webpack from 'webpack'
 
 const currentDir = import.meta.dirname
 
@@ -49,6 +50,13 @@ export default function config() {
         },
       ],
     },
+    plugins: [
+      // Replace isomorphic-dompurify with a simpler implementation for Node
+      new webpack.NormalModuleReplacementPlugin(
+        /isomorphic-dompurify/,
+        path.resolve(currentDir, 'src/dompurify-mock.js'),
+      ),
+    ],
     devtool: `nosources-source-map`,
     infrastructureLogging: {
       level: `log`,
